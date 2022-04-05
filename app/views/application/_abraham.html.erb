@@ -4,7 +4,7 @@
   <% if trigger != 'manual' %>
   Abraham.tours["<%= tour_name %>"].on("complete", function() {
     // Make AJAX call to save history of tour completion
-    return fetch("/abraham_histories/", {
+    return fetch('<%= Abraham::Engine.routes.url_helpers.histories_path %>', {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -25,9 +25,9 @@
   Abraham.tours["<%= tour_name %>"].addStep({
     id: 'step-<%= key %>',
     <% if step.key?('title') %>
-    title: "<%= step['title'] %>",
+    title: "<%= step['title'].gsub('"', '\"').html_safe %>",
     <% end %>
-    text: "<%= step['text'] %>",
+    text: "<%= step['text'].gsub('"', '\"').html_safe %>",
     <% if step.key?('attachTo') %>
     attachTo: { element: "<%= escape_javascript(step['attachTo']['element'].html_safe) %>", on: "<%= step['attachTo']['placement'] %>" },
     showOn: function() {
